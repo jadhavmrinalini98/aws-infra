@@ -40,7 +40,7 @@ aws_route_table
 aws_route_table_association
 
 
-AWS Custom VPC Creation steps 
+AWS Custom VPC Creation steps:
 
 •	Select the region 
 •	Create VPC
