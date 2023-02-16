@@ -1,27 +1,27 @@
 # aws-infra
 
-INTRODUCTION
+#INTRODUCTION
 
 Configuration creates set of VPC resources in Dev and Demo environment.
 
-STEPS TO RUN TERRAFORM
+#STEPS TO RUN TERRAFORM
 
 $ terraform init
 $ terraform plan
 $ terraform apply
 $ terraform destroy
 
-REQUIREMENTS    
+#REQUIREMENTS    
 
 terraform      >= 0.12.26
 aws            >= 3.15
 
-PROVIDERS
+#PROVIDERS
 
 aws            >= 3.15
 
 
-MODULES
+#MODULES
 
 vpc_cidr_block
 vpc_instance_tenancy
@@ -31,7 +31,7 @@ vpc_public_subnet_name
 vpc_public_rt_name
 
 
-RESOURCES 
+#RESOURCES 
 
 aws_vpc
 aws_internet_gateway
@@ -40,7 +40,7 @@ aws_route_table
 aws_route_table_association
 
 
-AWS Custom VPC Creation steps:
+#AWS Custom VPC Creation steps:
 
 •	Select the region 
 •	Create VPC
