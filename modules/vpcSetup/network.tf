@@ -8,7 +8,7 @@ resource "aws_vpc" "vpc" {
 }
 
 output "vpc_id" {
-  value = "${aws_vpc.vpc.id}"
+  value = aws_vpc.vpc.id
 }
 
 resource "aws_internet_gateway" "internet-gateway" {
@@ -34,7 +34,7 @@ resource "aws_subnet" "public-subnet" {
 }
 
 output "subnet_ids" {
-  value = "${aws_subnet.public-subnet.*.id}"
+  value = aws_subnet.public-subnet.*.id
 }
 
 resource "aws_route_table" "public-route-table" {

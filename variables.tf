@@ -69,5 +69,5 @@ variable "volume_size" {
 }
 
 variable "app_port" {
-  default=3000
+  default = 3000
 }

@@ -15,7 +15,7 @@ variable "subnet_count" {
 }
 
 variable "subnet_ids" {
-  type = list
+  type = list(any)
 }
 
 variable "instance_type" {
