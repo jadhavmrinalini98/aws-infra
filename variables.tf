@@ -3,7 +3,7 @@ variable "region" {
 }
 
 variable "environment" {
-  default = "dev"
+  default = "demo"
 }
 
 variable "vpc_cidr_block" {
@@ -15,7 +15,7 @@ variable "vpc_instance_tenancy" {
 }
 
 variable "subnet_count" {
-  default = 3
+  default = 1
 }
 
 variable "subnet_bits" {
@@ -44,4 +44,30 @@ variable "vpc_private_subnet_name" {
 
 variable "vpc_private_rt_name" {
   default = "vpc1PrivateRT"
+}
+
+# Instance creation config.
+
+variable "ami_key_pair_name" {
+  default = "ec2"
+}
+
+variable "ami_id" {
+  default = "ami-030cb64c7674d3b67"
+}
+
+variable "instance_type" {
+  default = "t2.micro"
+}
+
+variable "volume_type" {
+  default = "gp2"
+}
+
+variable "volume_size" {
+  default = 50
+}
+
+variable "app_port" {
+  default = 3000
 }
