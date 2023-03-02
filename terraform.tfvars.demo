@@ -1,2 +1,3 @@
-region = "us-east-1"
+region      = "us-east-1"
 environment = "demo"
+ami_id      = "ami-087ef731c5aacbc34"

@@ -70,6 +70,10 @@ resource "aws_subnet" "private-subnet" {
   }
 }
 
+output "private_subnet_ids" {
+  value = aws_subnet.private-subnet.*.id
+}
+
 resource "aws_route_table" "private-route-table" {
   vpc_id = aws_vpc.vpc.id
 
