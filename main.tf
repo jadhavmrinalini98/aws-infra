@@ -25,6 +25,37 @@ module "sec_group_setup" {
   app_port = var.app_port
 }
 
+module "db_sec_group_setup" {
+  source = "./modules/dbSecurityGroup"
+
+  vpc_id     = module.vpc_setup.vpc_id
+  secGroupId = module.sec_group_setup.sec_group_id
+}
+
+module "rds_instance" {
+  source = "./modules/databaseInstance"
+
+  username           = var.username
+  password           = var.password
+  engine_version     = var.engine_version
+  identifier         = var.identifier
+  private_subnet_ids = module.vpc_setup.private_subnet_ids
+  security_group_id  = module.db_sec_group_setup.db_sec_group_id
+  db_name            = var.db_name
+}
+
+module "iam_role_setup" {
+  source = "./modules/iamRoleSetup"
+
+  s3_bucket = module.s3_bucket.s3_bucket
+}
+
+module "s3_bucket" {
+  source = "./modules/s3Bucket"
+
+  environment = var.environment
+}
+
 module "instance_create" {
   source = "./modules/instanceCreate"
 
@@ -36,4 +67,12 @@ module "instance_create" {
   volume_size       = var.volume_size
   instance_type     = var.instance_type
   volume_type       = var.volume_type
+  db_name           = var.db_name
+  username          = var.username
+  password          = var.password
+  host_name         = module.rds_instance.host_name
+  app_port          = var.app_port
+  db_port           = var.db_port
+  ec2_profile_name  = module.iam_role_setup.ec2_profile_name
+  s3_bucket         = module.s3_bucket.s3_bucket
 }
