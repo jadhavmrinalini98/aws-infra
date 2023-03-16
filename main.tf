@@ -75,4 +75,6 @@ module "instance_create" {
   db_port           = var.db_port
   ec2_profile_name  = module.iam_role_setup.ec2_profile_name
   s3_bucket         = module.s3_bucket.s3_bucket
+  zone_id           = var.zone_id
+  record_name       = var.record_name
 }
