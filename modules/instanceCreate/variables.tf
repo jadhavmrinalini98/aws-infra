@@ -60,9 +60,9 @@ variable "s3_bucket" {
   type = string
 }
 variable "zone_id" {
-  type    = string
+  type = string
 }
 
 variable "record_name" {
-  type    = string
+  type = string
 }
