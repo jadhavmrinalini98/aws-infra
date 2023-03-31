@@ -1,4 +1,4 @@
 
 region      = "us-east-1"
 environment = "demo"
-ami_id      = "ami-04b1e311b08580e1e"
+ami_id      = "ami-04ef416b049aa2436"
