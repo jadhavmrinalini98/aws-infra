@@ -1,11 +1,12 @@
 resource "aws_instance" "app_server" {
   # count = var.subnet_count
 
-  ami                  = var.ami_id
-  instance_type        = var.instance_type
-  key_name             = var.ami_key_pair_name
-  security_groups      = ["${var.sec_id}"]
-  iam_instance_profile = var.ec2_profile_name
+  ami                     = var.ami_id
+  instance_type           = var.instance_type
+  key_name                = var.ami_key_pair_name
+  security_groups         = ["${var.sec_id}"]
+  iam_instance_profile    = var.ec2_profile_name
+  disable_api_termination = true
 
   tags = {
     Name = "EC2-${var.ami_id}"
@@ -27,21 +28,26 @@ resource "aws_instance" "app_server" {
     echo DBPORT=${var.db_port} >> .env
     echo BUCKETNAME=${var.s3_bucket} >> .env
 
+    sudo chown -R root:ec2-user /var/log   
+    sudo chmod -R 770 -R /var/log
+
     sudo systemctl daemon-reload
     sudo systemctl start webapp.service
     sudo systemctl enable webapp.service    
+
+    sudo ../../../opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+        -a fetch-config \
+        -m ec2 \
+        -c file:./cloudwatch/cloudwatch-config.json \
+        -s
 
   EOF
 
   subnet_id = var.subnet_ids[0]
 }
-data "aws_route53_zone" "hosted_zone" {
-  name         = var.record_name
-  private_zone = false
-}
 
-resource "aws_route53_record" "record_creation" {
-  zone_id = data.aws_route53_zone.hosted_zone.zone_id
+resource "aws_route53_record" "a_record" {
+  zone_id = var.zone_id
   name    = var.record_name
   type    = "A"
   ttl     = 60
