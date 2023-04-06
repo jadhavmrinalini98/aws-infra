@@ -97,6 +97,6 @@ variable "zone_id" {
   type = string
 }
 
-variable "record_name" {
+variable "rec_name" {
   type = string
 }
