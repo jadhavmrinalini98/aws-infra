@@ -18,11 +18,18 @@ module "vpc_setup" {
   private_rt_name       = var.vpc_private_rt_name
 }
 
+module "lb_sec_group" {
+  source = "./modules/loadBalancerSecGroup"
+
+  vpc_id = module.vpc_setup.vpc_id
+}
+
 module "sec_group_setup" {
   source = "./modules/securityGroup"
 
-  vpc_id   = module.vpc_setup.vpc_id
-  app_port = var.app_port
+  vpc_id       = module.vpc_setup.vpc_id
+  app_port     = var.app_port
+  lbSecGroupId = module.lb_sec_group.lb_sec_id
 }
 
 module "db_sec_group_setup" {
@@ -56,25 +63,23 @@ module "s3_bucket" {
   environment = var.environment
 }
 
-module "instance_create" {
-  source = "./modules/instanceCreate"
+module "auto_scaling" {
+  source = "./modules/autoScaling"
 
   ami_id            = var.ami_id
   sec_id            = module.sec_group_setup.sec_group_id
+  lb_sec_id         = module.lb_sec_group.lb_sec_id
   ami_key_pair_name = var.ami_key_pair_name
-  subnet_count      = var.subnet_count
   subnet_ids        = module.vpc_setup.subnet_ids
-  volume_size       = var.volume_size
-  instance_type     = var.instance_type
-  volume_type       = var.volume_type
+  ec2_profile_name  = module.iam_role_setup.ec2_profile_name
+  app_port          = var.app_port
+  vpc_id            = module.vpc_setup.vpc_id
+  zone_id           = var.zone_id
   db_name           = var.db_name
   username          = var.username
   password          = var.password
   host_name         = module.rds_instance.host_name
-  app_port          = var.app_port
   db_port           = var.db_port
-  ec2_profile_name  = module.iam_role_setup.ec2_profile_name
   s3_bucket         = module.s3_bucket.s3_bucket
-  zone_id           = var.zone_id
-  record_name       = var.record_name
+  rec_name          = var.rec_name
 }
